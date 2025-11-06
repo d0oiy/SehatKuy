@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Konsultasi Baru{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h5>Buat Konsultasi Baru</h5>
+    </div>
+    <div class="card-body">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success">Kirim Konsultasi</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

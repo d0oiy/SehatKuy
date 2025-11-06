@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard Pasien{% endblock %}
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h3 class="mb-3">Selamat datang, {{ user.first_name }} {{ user.last_name }}</h3>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Username:</strong> {{ user.username }}</p>
+  </div>
+</div>
+
+<div class="row mt-4">
+  <div class="col-md-4">
+    <div class="card shadow-sm border-success">
+      <div class="card-body text-center">
+        <h5>Buat Konsultasi Baru</h5>
+        <p>Konsultasikan keluhan kesehatanmu dengan dokter.</p>
+        <a href="{% url 'consultation_create' %}" class="btn btn-success w-100">Mulai Konsultasi</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card shadow-sm border-info">
+      <div class="card-body text-center">
+        <h5>Riwayat Konsultasi</h5>
+        <p>Lihat riwayat konsultasi dan statusnya.</p>
+        <a href="{% url 'consultation_list' %}" class="btn btn-info w-100 text-white">Lihat Riwayat</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card shadow-sm border-warning">
+      <div class="card-body text-center">
+        <h5>Antrian Konsultasi</h5>
+        <p>Cek status antrian konsultasi kamu.</p>
+        <a href="#" class="btn btn-warning w-100">Lihat Antrian</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

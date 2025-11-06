@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Buat Konsultasi{% endblock %}
+{% block content %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h4 class="mb-4 text-success">🩺 Form Konsultasi Baru</h4>
+
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-success">Kirim Konsultasi</button>
+      <a href="{% url 'consultation_list' %}" class="btn btn-secondary">Kembali</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

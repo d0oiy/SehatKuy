@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Daftar Dokter</h2>
+<a href="{% url 'doctor_add' %}" class="btn btn-primary">+ Tambah Dokter</a>
+<table class="table table-bordered mt-3">
+  <thead>
+    <tr>
+      <th>Nama</th>
+      <th>Spesialisasi</th>
+      <th>Email</th>
+      <th>Telepon</th>
+      <th>Aksi</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for doctor in doctors %}
+    <tr>
+      <td>{{ doctor.full_name }}</td>
+      <td>{{ doctor.specialization }}</td>
+      <td>{{ doctor.email }}</td>
+      <td>{{ doctor.phone }}</td>
+      <td>
+        <a href="{% url 'doctor_edit' doctor.id %}" class="btn btn-warning btn-sm">Edit</a>
+        <a href="{% url 'doctor_delete' doctor.id %}" class="btn btn-danger btn-sm">Hapus</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5" class="text-center">Belum ada data dokter.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

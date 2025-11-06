@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Riwayat Kesehatan{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+  <h4 class="mb-3 text-success">📋 Riwayat Kesehatan Kamu</h4>
+
+  {% if records %}
+  <table class="table table-bordered table-hover bg-white shadow-sm">
+    <thead class="table-success">
+      <tr>
+        <th>Tanggal</th>
+        <th>Diagnosis</th>
+        <th>Pengobatan</th>
+        <th>Resep</th>
+        <th>Catatan Dokter</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for record in records %}
+      <tr>
+        <td>{{ record.created_at|date:"d M Y, H:i" }}</td>
+        <td>{{ record.diagnosis }}</td>
+        <td>{{ record.treatment|default:"-" }}</td>
+        <td>{{ record.prescription|default:"-" }}</td>
+        <td>{{ record.doctor_note|default:"-" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="alert alert-info">Belum ada riwayat kesehatan yang tercatat.</div>
+  {% endif %}
+</div>
+{% endblock %}

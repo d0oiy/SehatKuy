@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Riwayat Konsultasi</h2>
+<table class="table">
+    <tr>
+        <th>Dokter</th>
+        <th>Tanggal</th>
+        <th>Keluhan</th>
+        <th>Status</th>
+    </tr>
+    {% for c in consultations %}
+    <tr>
+        <td>{{ c.doctor_name }}</td>
+        <td>{{ c.date }}</td>
+        <td>{{ c.complaint }}</td>
+        <td>{{ c.status }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">Belum ada konsultasi.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}
