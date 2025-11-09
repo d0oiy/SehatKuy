@@ -2,160 +2,433 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Sehatkuy | Layanan Kesehatan Digital</title>
+
+  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    html {
-      scroll-behavior: smooth;
-    }
-    body {
-      font-family: "Poppins", sans-serif;
-      overflow-x: hidden;
-    }
-    section {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: all 0.8s ease-in-out;
-    }
-    section.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    #scrollTopBtn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      display: none;
-      background-color: #0d6efd;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 45px;
-      height: 45px;
-      font-size: 22px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      cursor: pointer;
-      z-index: 1000;
-    }
-    #scrollTopBtn:hover {
-      background-color: #0b5ed7;
-    }
-  </style>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'css/sehatkuy-styles.css' %}">
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- 🌐 Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
+
+ <!-- 🌐 Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+  <div class="container py-2">
+    <!-- 🔹 Logo SehatKuy -->
+    <a class="navbar-brand d-flex align-items-center fw-bold text-success" href="#home">
+      <img src="{% static 'images/sehatkuylogo.png' %}" alt="SehatKuy Logo" 
+           style="height: 45px; width: auto; margin-right: 10px;">
+      SehatKuy
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <li class="nav-item"><a class="nav-link" href="#about">Tentang</a></li>
+        <li class="nav-item"><a class="nav-link" href="#services">Layanan</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Kontak</a></li>
+
+        {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="btn btn-success ms-3" href="{% url 'patient_dashboard' %}">Dashboard</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="btn btn-primary ms-3" href="{% url 'login' %}">Masuk</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  <!-- HERO -->
+  <header id="home" class="hero" role="banner"
+          style="background-image: url('{% static 'images/bg-new.jpg' %}');">
+    <!-- overlay gradien putih -> transparan -->
+    <div class="hero-overlay"></div>
+
+    <div class="container hero-content text-start text-dark">
+      <div class="row align-items-center">
+        <div class="col-lg-7">
+          <span class="badge-like">Professional Healthcare Services</span>
+
+          <h1 class="hero-title">
+            Kesehatan Anda,
+            <span class="text-primary">Prioritas Kami</span>
+          </h1>
+
+          <p class="hero-desc">
+            Nikmati layanan kesehatan kelas dunia melalui tim dokter berpengalaman dan fasilitas modern.
+            Perjalanan Anda menuju hidup sehat dimulai dari sini.
+          </p>
+
+          <div class="mt-4 d-flex gap-3">
+            {% if user.is_authenticated %}
+              <a href="{% url 'appointments:appointment_list' %}" class="btn btn-cta btn-lg">Buat Janji</a>
+              <a href="#services" class="btn btn-outline-cta btn-lg">Jelajahi Layanan</a>
+            {% else %}
+              <a href="{% url 'login' %}" class="btn btn-cta btn-lg">Mulai Sekarang</a>
+              <a href="#services" class="btn btn-outline-cta btn-lg">Jelajahi Layanan</a>
+            {% endif %}
+          </div>
+
+          <!-- Stats -->
+          <div class="hero-stats d-flex gap-4 mt-5">
+            <div class="stat">
+              <div class="stat-value">15+</div>
+              <div class="stat-label">Tahun Pengalaman</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">50K+</div>
+              <div class="stat-label">Pasien Puas</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">100+</div>
+              <div class="stat-label">Dokter Ahli</div>
+            </div>
+          </div>
+        </div>
+        <!-- empty right column reserved for visual balance (image covers background) -->
+        <div class="col-lg-5 d-none d-lg-block"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- SERVICES -->
+  <section id="services" class="section section--pad">
     <div class="container">
-      <a class="navbar-brand fw-bold text-primary" href="#">Sehatkuy</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto align-items-center">
-          <li class="nav-item"><a class="nav-link" href="#about">Tentang</a></li>
-          <li class="nav-item"><a class="nav-link" href="#services">Layanan</a></li>
-          <li class="nav-item"><a class="nav-link" href="#contact">Kontak</a></li>
-          {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="btn btn-success ms-3" href="{% url 'patient_dashboard' %}">Dashboard</a>
-            </li>
-          {% else %}
-            <li class="nav-item">
-              <a class="btn btn-primary ms-3" href="{% url 'login' %}">Masuk</a>
-            </li>
-          {% endif %}
+      <div class="section-head text-center mb-5">
+        <span class="section-badge">Layanan Kami</span>
+        <h2 class="section-title">Solusi Kesehatan Komprehensif</h2>
+        <p class="section-sub">Dari pencegahan sampai pengobatan — rangkaian layanan medis untuk kebutuhan Anda.</p>
+      </div>
+
+      <div class="row g-4">
+        <!-- service cards: 8 items (2 rows) -->
+        <div class="col-md-6 col-lg-3">
+          <div class="service-card p-4 h-100">
+            <div class="service-icon">💬</div>
+            <h5 class="fw-bold mt-2">Konsultasi Online</h5>
+            <p class="small text-muted">Bertemu dokter melalui video call aman dan mudah.</p>
+            <a href="#" class="service-more">Pelajari Lebih Lanjut →</a>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+          <div class="service-card p-4 h-100">
+            <div class="service-icon">💊</div>
+            <h5 class="fw-bold mt-2">Pesan Obat</h5>
+            <p class="small text-muted">Obat dikirim langsung ke alamat Anda.</p>
+            <a href="#" class="service-more">Pelajari Lebih Lanjut →</a>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+          <div class="service-card p-4 h-100">
+            <div class="service-icon">📅</div>
+            <h5 class="fw-bold mt-2">Buat Janji</h5>
+            <p class="small text-muted">Pilih dokter dan jadwal sesuai ketersediaan.</p>
+            {% if user.is_authenticated %}
+              <a href="{% url 'appointments:appointment_list' %}" class="service-more">Buat Janji →</a>
+            {% else %}
+              <a href="{% url 'login' %}" class="service-more">Masuk untuk Buat Janji →</a>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+          <div class="service-card p-4 h-100">
+            <div class="service-icon">🏥</div>
+            <h5 class="fw-bold mt-2">Poliklinik</h5>
+            <p class="small text-muted">Layanan spesialis untuk berbagai kebutuhan medis.</p>
+            <a href="#" class="service-more">Pelajari Lebih Lanjut →</a>
+          </div>
+        </div>
+
+        <!-- second row -->
+        <div class="col-md-6 col-lg-3">
+          <div class="service-card p-4 h-100">
+            <div class="service-icon">🔬</div>
+            <h5 class="fw-bold mt-2">Laboratorium</h5>
+            <p class="small text-muted">Tes diagnostik cepat dan akurat.</p>
+            <a href="#" class="service-more">Pelajari Lebih Lanjut →</a>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+          <div class="service-card p-4 h-100">
+            <div class="service-icon">❤️</div>
+            <h5 class="fw-bold mt-2">Kardiologi</h5>
+            <p class="small text-muted">Perawatan jantung dengan fasilitas modern.</p>
+            <a href="#" class="service-more">Pelajari Lebih Lanjut →</a>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+          <div class="service-card p-4 h-100">
+            <div class="service-icon">🧠</div>
+            <h5 class="fw-bold mt-2">Neurologi</h5>
+            <p class="small text-muted">Penanganan kondisi neurologis.</p>
+            <a href="#" class="service-more">Pelajari Lebih Lanjut →</a>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+          <div class="service-card p-4 h-100">
+            <div class="service-icon">⚕️</div>
+            <h5 class="fw-bold mt-2">Gawat Darurat</h5>
+            <p class="small text-muted">Layanan 24/7 untuk kasus darurat.</p>
+            <a href="#" class="service-more">Pelajari Lebih Lanjut →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-5">
+        <a class="btn btn-outline-success btn-lg" href="#services">Lihat Semua Layanan</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT (dengan fitur grid) -->
+  <section id="about" class="section section--pad bg-light">
+    <div class="container">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-6">
+          <span class="section-badge small">Tentang Sehatkuy</span>
+          <h2 class="section-title">Menjaga Kesehatan Anda, Setiap Langkah</h2>
+          <p class="lead text-muted">
+            Sehatkuy telah melayani masyarakat selama bertahun-tahun dengan tim dokter berdedikasi dan fasilitas lengkap.
+            Misi kami adalah menghadirkan layanan kesehatan berkualitas yang mudah diakses.
+          </p>
+
+          <div class="row mt-4 g-3">
+            <div class="col-4 text-center">
+              <div class="about-stat">15+</div>
+              <div class="small text-muted">Tahun Pengalaman</div>
+            </div>
+            <div class="col-4 text-center">
+              <div class="about-stat">50K+</div>
+              <div class="small text-muted">Pasien Terlayani</div>
+            </div>
+            <div class="col-4 text-center">
+              <div class="about-stat">100+</div>
+              <div class="small text-muted">Tenaga Medis</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <div class="feature-sm p-3 rounded shadow-sm h-100">
+                <div class="feature-icon">🏆</div>
+                <h6 class="fw-bold">Penghargaan</h6>
+                <p class="small text-muted">Diakui untuk kualitas layanan dan kepuasan pasien.</p>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="feature-sm p-3 rounded shadow-sm h-100">
+                <div class="feature-icon">👩‍⚕️</div>
+                <h6 class="fw-bold">Tim Ahli</h6>
+                <p class="small text-muted">Dokter dan tenaga medis berpengalaman.</p>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="feature-sm p-3 rounded shadow-sm h-100">
+                <div class="feature-icon">⏰</div>
+                <h6 class="fw-bold">24/7</h6>
+                <p class="small text-muted">Layanan darurat dan dukungan online non-stop.</p>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="feature-sm p-3 rounded shadow-sm h-100">
+                <div class="feature-icon">✅</div>
+                <h6 class="fw-bold">Jaminan Kualitas</h6>
+                <p class="small text-muted">Fasilitas bertaraf internasional.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials" class="section section--pad">
+    <div class="container">
+      <div class="text-center mb-5">
+        <span class="section-badge">Testimoni</span>
+        <h2 class="section-title">Apa Kata Pasien Kami</h2>
+        <p class="section-sub text-muted">Kisah nyata dari pasien yang mempercayakan kesehatannya kepada kami.</p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card testimonial p-4 h-100">
+            <p class="text-muted">"Layanan konsultasi online sangat membantu. Saya tidak perlu meninggalkan rumah."</p>
+            <div class="mt-3 fw-bold">Sarah J.</div>
+            <div class="small text-muted">Pasien</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card testimonial p-4 h-100">
+            <p class="text-muted">"Proses booking janji cepat dan dokter sangat profesional."</p>
+            <div class="mt-3 fw-bold">Michael C.</div>
+            <div class="small text-muted">Pasien</div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card testimonial p-4 h-100">
+            <p class="text-muted">"Pengingat obatnya membantu keluarga saya untuk rutin minum obat."</p>
+            <div class="mt-3 fw-bold">Priya S.</div>
+            <div class="small text-muted">Pasien</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section bg-light section--pad">
+    <div class="container">
+      <div class="text-center mb-4">
+        <span class="section-badge">Kontak</span>
+        <h2 class="section-title">Hubungi Tim Kami</h2>
+        <p class="text-muted">Punya pertanyaan? Kami siap membantu.</p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <div class="card p-4 shadow-sm">
+            <h6 class="fw-bold">Telepon</h6>
+            <p class="small text-muted">+62 21 1234 5678 (Senin–Jumat 8AM–8PM)</p>
+            <hr/>
+            <h6 class="fw-bold">Email</h6>
+            <p class="small text-muted">info@sehatkuy.com</p>
+            <hr/>
+            <h6 class="fw-bold">Alamat</h6>
+            <p class="small text-muted">Jl. Kesehatan No. 123, Jakarta</p>
+          </div>
+        </div>
+
+        <div class="col-lg-8">
+          <div class="card p-4 shadow-sm">
+            <form id="contactForm">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <input class="form-control" name="name" placeholder="Nama Lengkap" required>
+                </div>
+                <div class="col-md-6">
+                  <input class="form-control" name="email" type="email" placeholder="email@domain.com" required>
+                </div>
+                <div class="col-md-6">
+                  <input class="form-control" name="phone" placeholder="+62 8xx xxxx xxxx" required>
+                </div>
+                <div class="col-12">
+                  <textarea class="form-control" rows="6" name="message" placeholder="Pesan" required></textarea>
+                </div>
+                <div class="col-12 text-end">
+                  <button class="btn btn-success">Kirim Pesan</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+<!-- FOOTER -->
+<footer class="footer bg-white border-top">
+  <div class="container py-5">
+    <div class="row align-items-start gy-4">
+
+      <!-- 🔹 Logo & Deskripsi -->
+      <div class="col-md-4">
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <img src="{% static 'images/sehatkuylogo.png' %}" alt="SehatKuy Logo"
+               style="height: 45px; width: auto;">
+          <span class="fw-bold fs-5 text-success">SehatKuy</span>
+        </div>
+        <p class="small text-muted mb-3">
+          Mitra terpercaya Anda dalam kesehatan dan kebugaran. Solusi digital untuk konsultasi, janji temu, dan layanan kesehatan terpadu.
+        </p>
+        <div class="d-flex gap-3">
+          <a href="#" class="text-success"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="text-success"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="text-success"><i class="bi bi-twitter"></i></a>
+        </div>
+      </div>
+
+      <!-- 🔹 Link Cepat -->
+      <div class="col-md-2">
+        <h6 class="fw-bold mb-3 text-success">Link Cepat</h6>
+        <ul class="list-unstyled small">
+          <li><a href="#home" class="text-muted text-decoration-none">Home</a></li>
+          <li><a href="#services" class="text-muted text-decoration-none">Layanan</a></li>
+          <li><a href="#about" class="text-muted text-decoration-none">Tentang</a></li>
         </ul>
       </div>
-    </div>
-  </nav>
 
-  <!-- 🌟 Hero Section -->
-  <section class="text-center d-flex align-items-center justify-content-center" style="height:100vh; background: linear-gradient(120deg, #0d6efd, #0dcaf0); color:white;">
-    <div class="mt-5">
-      <h1 class="display-4 fw-bold">Selamat Datang di Sehatkuy</h1>
-      <p class="lead mt-3">Solusi Kesehatan Digital untuk Konsultasi, Antrian, dan Pengingat Obat Anda.</p>
-      {% if user.is_authenticated %}
-        <a href="{% url 'patient_dashboard' %}" class="btn btn-light btn-lg mt-3">Ke Dashboard</a>
-      {% else %}
-        <a href="{% url 'login' %}" class="btn btn-light btn-lg mt-3">Mulai Sekarang</a>
-      {% endif %}
-    </div>
-  </section>
+      <!-- 🔹 Layanan -->
+      <div class="col-md-3">
+        <h6 class="fw-bold mb-3 text-success">Layanan Kami</h6>
+        <ul class="list-unstyled small">
+          <li><a href="#" class="text-muted text-decoration-none">Konsultasi Online</a></li>
+          <li><a href="#" class="text-muted text-decoration-none">Buat Janji</a></li>
+          <li><a href="#" class="text-muted text-decoration-none">Pesan Obat</a></li>
+        </ul>
+      </div>
 
-  <!-- 🩺 About -->
-  <section id="about" class="py-5">
-    <div class="container">
-      <h2 class="text-center mb-4">Tentang Sehatkuy</h2>
-      <p class="text-center">Sehatkuy adalah platform layanan kesehatan digital yang memudahkan pasien untuk melakukan konsultasi online, melihat antrian, dan mendapatkan pengingat obat secara otomatis.</p>
-    </div>
-  </section>
-
-  <!-- 💡 Services -->
-  <section id="services" class="py-5 bg-light">
-    <div class="container">
-      <h2 class="text-center mb-4">Layanan Kami</h2>
-      <div class="row text-center g-4">
-        <div class="col-md-4">
-          <div class="card border-0 shadow-sm p-4 h-100">
-            <h4 class="fw-bold">Konsultasi Online</h4>
-            <p>Konsultasikan kesehatan Anda langsung dengan dokter berpengalaman di mana saja.</p>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card border-0 shadow-sm p-4 h-100">
-            <h4 class="fw-bold">Antrian Digital</h4>
-            <p>Cek dan kelola antrian layanan kesehatan dengan mudah tanpa harus menunggu lama.</p>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card border-0 shadow-sm p-4 h-100">
-            <h4 class="fw-bold">Pengingat Obat</h4>
-            <p>Dapatkan pengingat otomatis untuk jadwal minum obat Anda secara tepat waktu.</p>
-          </div>
-        </div>
+      <!-- 🔹 Kontak -->
+      <div class="col-md-3">
+        <h6 class="fw-bold mb-3 text-success">Kontak</h6>
+        <p class="small text-muted mb-1">Jl. Kesehatan No. 123, Jakarta</p>
+        <p class="small text-muted mb-1">Email: <a href="mailto:info@sehatkuy.com" class="text-success text-decoration-none">info@sehatkuy.com</a></p>
+        <p class="small text-muted">Telepon: +62 812 3456 7890</p>
       </div>
     </div>
-  </section>
 
-  <!-- 📞 Footer -->
-  <footer id="contact" class="bg-dark text-light py-4 text-center">
-    <div class="container">
-      <p class="mb-1">© 2025 Sehatkuy. Semua Hak Dilindungi.</p>
-      <p>Email: <a href="mailto:info@sehatkuy.com" class="text-info text-decoration-none">info@sehatkuy.com</a> | Telepon: +62 812 3456 7890</p>
+    <!-- 🔹 Footer Bottom -->
+    <div class="text-center small text-muted mt-4 pt-3 border-top">
+      © 2025 <strong class="text-success">SehatKuy</strong>. Semua Hak Dilindungi.
     </div>
-  </footer>
+  </div>
+</footer>
 
-  <!-- ⬆️ Tombol Scroll ke Atas -->
-  <button id="scrollTopBtn" title="Kembali ke atas">↑</button>
 
+
+  <!-- JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    // 🌬️ Animasi fade-in saat scroll
-    const sections = document.querySelectorAll("section");
-    const showOnScroll = () => {
-      const triggerBottom = window.innerHeight * 0.85;
-      sections.forEach(sec => {
-        const rect = sec.getBoundingClientRect();
-        if (rect.top < triggerBottom) sec.classList.add("visible");
-      });
-    };
-    window.addEventListener("scroll", showOnScroll);
-    showOnScroll();
 
-    // 🔝 Tombol scroll ke atas
-    const scrollTopBtn = document.getElementById("scrollTopBtn");
-    window.onscroll = () => {
-      if (document.documentElement.scrollTop > 300) {
-        scrollTopBtn.style.display = "block";
-      } else {
-        scrollTopBtn.style.display = "none";
-      }
-    };
-    scrollTopBtn.onclick = () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    };
+  <script>
+    // Navbar shrink on scroll
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) nav.classList.add('nav-scrolled');
+      else nav.classList.remove('nav-scrolled');
+    });
+
+    // Smooth scrolling for nav links
+    document.querySelectorAll('#navLinks a').forEach(a=>{
+      a.addEventListener('click', e=>{
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
+      })
+    });
   </script>
 </body>
 </html>
